@@ -6,9 +6,11 @@ const mongoose = require('mongoose');
 const port = 4000;
 const entryRoutes = express.Router();
 
+let Entry = require('./entry.model');
+
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/warnings', entryRoutes);
+app.use('/entries', entryRoutes);
 
 mongoose.connect('mongodb://127.0.0.1:27017/entries', {useNewUrlParser: true });
 const connection = mongoose.connection;
