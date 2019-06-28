@@ -42,7 +42,6 @@ entryRoutes.route('/:id').get(function(req, res) {
 
 entryRoutes.route('/add').post(function(req, res) {
 	let entry = new Entry(req.body);
-	console.log(req.body);
 	entry.save()
 		.then(entry => {
 			res.status(200).json({'entry': 'entry added successsfully'});
