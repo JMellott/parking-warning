@@ -10,6 +10,9 @@ let Entry = new Schema({
 	},
 	entry_author: {
 		type: String
+	},
+	entry_zone: {
+		type: String
 	}
 });
 

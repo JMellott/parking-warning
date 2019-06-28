@@ -12,9 +12,13 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/entries', entryRoutes);
 
-mongoose.connect('mongodb://127.0.0.1:27017/entries', {useNewUrlParser: true });
-const connection = mongoose.connection;
+//dev purposes - local data connection
+//mongoose.connect('mongodb://127.0.0.1:27017/entries', {useNewUrlParser: true });
+//const connection = mongoose.connection;
 
+const connectionString = "mongodb+srv://DevUser:fdICcSrUDxizWS7h@parkingwarningcluster-ubevk.mongodb.net/ParkingWarningDB?retryWrites=true&w=majority";
+mongoose.connect(connectionString, { useNewUrlParser: true });
+const connection = mongoose.connection;
 connection.once('open', function() {
 	console.log('MongoDB database connection established successsfully');
 });
@@ -68,4 +72,5 @@ entryRoutes.route('/update/:id').post(function(req, res) {
 			});
 		}
 	});
+
 });
