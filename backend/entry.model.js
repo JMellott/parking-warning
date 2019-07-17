@@ -2,16 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Entry = new Schema({
-	entry_text: {
+	message: {
 		type: String
 	},
-	entry_time: {
+	time_submitted: {
 		type: String
 	},
-	entry_author: {
+	author: {
 		type: String
 	},
-	entry_zone: {
+	zone: {
 		type: String
 	}
 });
