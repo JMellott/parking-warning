@@ -60,9 +60,9 @@ entryRoutes.route('/update/:id').post(function(req, res) {
 		if (!entry) {
 			res.status(404).send("data is not found");
 		} else {
-			entry.entry_text = req.body.entry_text;
-			entry.entry_time = req.body.entry_time;
-			entry.entry_author = req.body.entry_author;
+			entry.message = req.body.message;
+			entry.time_submitted = req.body.time_submitted;
+			entry.author = req.body.author;
 
 			entry.save().then(entry => {
 				res.json('Entry updated!');
