@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const csp = require('express-csp-header');
 const mongoose = require('mongoose');
 const port = 4000;
 const entryRoutes = express.Router();
@@ -11,6 +12,16 @@ let Entry = require('./entry.model');
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/entries', entryRoutes);
+/*app.use(csp({
+	policies: {
+		'default-src': [csp.NONE],
+		'img-src': [csp.SELF]
+	}
+}));*/
+app.use(function(req, res, next) {
+    res.setHeader("Content-Security-Policy", "default-src 'none'");
+    return next();
+});
 
 //dev purposes - local data connection
 //mongoose.connect('mongodb://127.0.0.1:27017/entries', {useNewUrlParser: true });
@@ -53,6 +64,22 @@ entryRoutes.route('/add').post(function(req, res) {
 		.catch(err => {
 			res.status(400).send('adding new entry failed');
 		});
+});
+
+entryRoutes.route('/view/:zone').get(function(req, res) {
+	let area = req.params.zone;
+	Entry.find({entry_zone: area}, function (err, results) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.json(results);
+		}
+	});
+	/*Entry.find({zone: area})
+		.then(console.log(res))
+		.catch(err => {
+			res.status(400).send('adding new entry failed');
+		});*/
 });
 
 entryRoutes.route('/update/:id').post(function(req, res) {
