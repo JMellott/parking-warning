@@ -2,7 +2,7 @@ Requires Node.js to be installed on your machine.
 
 To run the code:
 1) Clone the repository into your local machine.
-2) Install dependencies by running 'npm install' in the root 'parking-warning' directory.
+2) Install dependencies by running 'npm install' in both the 'client' and 'backend' directories.
 3) Navigate to the backend folder and start the server by running 'nodemon server'.
 4) Navigate back to the client folder and start the app by running 'npm start'.
 
