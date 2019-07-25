@@ -68,11 +68,11 @@ entryRoutes.route('/add').post(function(req, res) {
 
 entryRoutes.route('/view/:zone').get(function(req, res) {
 	let area = req.params.zone;
-	Entry.find({entry_zone: area}, function (err, results) {
+	Entry.find({entry_zone: area}, function (err, entries) {
 		if (err) {
 			console.log(err);
 		} else {
-			res.json(results);
+			res.json({entries});
 		}
 	});
 	/*Entry.find({zone: area})
