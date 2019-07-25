@@ -7,8 +7,6 @@ import Home from "./components/home.component";
 import AddWarning from "./components/add-warning.component";
 import ViewWarnings from "./components/view-warnings.component";
 
-import logo from "./logo.svg";
-
 class App extends Component {
 	render() {
 		return (

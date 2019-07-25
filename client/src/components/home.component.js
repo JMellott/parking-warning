@@ -1,7 +1,36 @@
-import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+import React, { Fragment, useState, useEffect } from "react";
 import axios from 'axios';
 
+function Search() {
+	const [zone, setZone] = useState('');
+	const [results, setResults] = useState('');
+	const [url, setUrl] = useState(
+		`http://localhost:4000/entries/view/`
+	);
+
+	useEffect(() => {
+		const fetchEntries = async () => {
+			const result = await axios.get(url);
+			setResults(result.data);
+		};
+
+		fetchEntries();
+	}, [url, results]);
+
+	return (
+		<Fragment>
+			<input type="text" value={zone} onChange={e => setZone(e.target.value)} />
+			<button type="btn-primary" onClick={() => 
+				setUrl(`http://localhost:4000/entries/view/${zone}`)
+			}>
+				Search
+			</button>
+		</Fragment>
+	);
+}
+export default Search;
+
+/*
 const Entry = props => (
     <tr>
         <td>{props.entry.entry_description}</td>
@@ -89,4 +118,4 @@ function WarningList(props) {
 	return (
 		<p>{props.entries}</p>
 	);
-}
+}*/
