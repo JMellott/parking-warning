@@ -3,7 +3,7 @@ Requires Node.js to be installed on your machine.
 To run the code:
 1) Clone the repository into your local machine.
 2) Install dependencies by running 'npm install' in both the 'client' and 'backend' directories.
-3) Navigate to the backend folder and start the server by running 'nodemon server'.
+3) Navigate to the backend folder and start the server by running 'npm start server'.
 4) Navigate back to the client folder and start the app by running 'npm start'.
 
 Changes will be made in the dev branch, and dev will be merged into master when features are ready for release.
