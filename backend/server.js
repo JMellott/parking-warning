@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -20,6 +21,7 @@ app.use('/entries', entryRoutes);
 }));*/
 app.use(function(req, res, next) {
     res.setHeader("Content-Security-Policy", "default-src 'none'");
+    console.log(process.env);
     return next();
 });
 
@@ -27,7 +29,7 @@ app.use(function(req, res, next) {
 //mongoose.connect('mongodb://127.0.0.1:27017/entries', {useNewUrlParser: true });
 //const connection = mongoose.connection;
 
-const connectionString = "mongodb+srv://DevUser:fdICcSrUDxizWS7h@parkingwarningcluster-ubevk.mongodb.net/ParkingWarningDB?retryWrites=true&w=majority";
+const connectionString = "mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASS + "@parkingwarningcluster-ubevk.mongodb.net/ParkingWarningDB?retryWrites=true&w=majority";
 mongoose.connect(connectionString, { useNewUrlParser: true });
 const connection = mongoose.connection;
 connection.once('open', function() {
