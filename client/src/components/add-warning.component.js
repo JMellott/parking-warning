@@ -5,69 +5,71 @@ export default class AddWarning extends Component {
 	constructor(props) {
         super(props);
 
-        this.onChangeEntryDescription = this.onChangeEntryDescription.bind(this);
-        this.onChangeEntryTime = this.onChangeEntryTime.bind(this);
-        this.onChangeEntryAuthor = this.onChangeEntryAuthor.bind(this);
-        this.onChangeEntryZone = this.onChangeEntryZone.bind(this);
+        this.onChangeDescription = this.onChangeDescription.bind(this);
+        this.onChangeTime = this.onChangeTime.bind(this);
+        this.onClickLocation = this.onClickLocation.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
-            entry_description: '',
-            entry_time: '',
-            entry_author: '',
-            entry_zone: ''
+            description: '',
+            time: '',
+            location: []
         }
     }
 
-    onChangeEntryDescription(e) {
+    onChangeDescription(e) {
         this.setState({
-            entry_description: e.target.value
+            description: e.target.value
         });
     }
 
-    onChangeEntryTime(e) {
+    onChangeTime(e) {
         this.setState({
-            entry_time: e.target.value
+            time: e.target.value
         });
     }
 
-    onChangeEntryAuthor(e) {
-        this.setState({
-            entry_author: e.target.value
-        });
-    }
+    onClickLocation(e) {
+        navigator.geolocation.getCurrentPosition(success, error);
 
-    onChangeEntryZone(e) {
-        this.setState({
-            entry_zone: e.target.value
-        });
+        const self = this;
+        function success(pos) {
+            const coords = pos.coords;
+            self.setState({
+                location: [coords.longitude, coords.latitude]
+            });
+        }
+
+        function error() {
+            console.log("Unable to retrieve location.");
+        }
     }
 
     onSubmit(e) {
         e.preventDefault();
         
         console.log(`Form submitted:`);
-        console.log(`Entry Description: ${this.state.entry_description}`);
-        console.log(`Entry Time: ${this.state.entry_time}`);
-        console.log(`Entry By: ${this.state.entry_author}`);
-        console.log(`Entry Zone: ${this.state.entry_zone}`);
+        console.log(`Entry Description: ${this.state.description}`);
+        console.log(`Entry Time: ${this.state.time}`);
+        console.log(`Entry Location: ${this.state.location}`);
         
         const newEntry = {
-            entry_description: this.state.entry_description,
-            entry_time: this.state.entry_time,
-            entry_author: this.state.entry_author,
-            entry_zone: this.state.entry_zone
+            description: this.state.description,
+            time: this.state.time,
+            location: [this.state.location[0], this.state.location[1]]
         };
 
-        axios.post('http://localhost:4000/entries/add', newEntry)
-            .then(res => console.log(res.data));
+        axios.post('http://localhost:4000/add', newEntry)
+            .then(res => console.log(res.data))
+            .then(
+                this.setState({
+                    description: '',
+                    time: '',
+                    location: []
+                })
+            );
 
-        this.setState({
-            entry_description: '',
-            entry_time: '',
-            entry_author: '',
-            entry_zone: ''
-        })
+        
     }
 
     render() {
@@ -79,8 +81,8 @@ export default class AddWarning extends Component {
                         <label>Description: </label>
                         <input  type="text"
                                 className="form-control"
-                                value={this.state.entry_description}
-                                onChange={this.onChangeEntryDescription}
+                                value={this.state.description}
+                                onChange={this.onChangeDescription}
                                 />
                     </div>
                     <div className="form-group">
@@ -88,26 +90,17 @@ export default class AddWarning extends Component {
                         <input 
                                 type="text" 
                                 className="form-control"
-                                value={this.state.entry_time}
-                                onChange={this.onChangeEntryTime}
+                                value={this.state.time}
+                                onChange={this.onChangeTime}
                                 />
                     </div>
                     <div className="form-group">
-                        <label>Author: </label>
+                        <label>Location: </label>
                         <input 
-                                type="text" 
+                                type="button" 
                                 className="form-control"
-                                value={this.state.entry_author}
-                                onChange={this.onChangeEntryAuthor}
-                                />
-                    </div>
-                    <div className="form-group">
-                        <label>Zone: </label>
-                        <input 
-                                type="text" 
-                                className="form-control"
-                                value={this.state.entry_zone}
-                                onChange={this.onChangeEntryZone}
+                                value= "Get Current Location"
+                                onClick={this.onClickLocation}
                                 />
                     </div>
                     <div className="form-group">

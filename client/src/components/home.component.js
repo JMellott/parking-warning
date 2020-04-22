@@ -1,45 +1,85 @@
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import React, { Component } from "react";
+import ViewWarnings from "./view-warnings.component";
 
-function Search() {
-	const [data, setData] = useState({ entries: [] });
-	const [zone, setZone] = useState('zone');
+export default class Home extends Component	{
+	constructor(props) {
+		super(props);
 
-  	useEffect(() => {
-    	let ignore = false;
+		this.state = {
+			locationPermission : false,
+			currentLocation : []
+		}
+	}
 
-    	async function fetchData() {
-      		const result = await axios('http://localhost:4000/entries/view/' + zone);
-      		if (!ignore) setData(result.data);
-    	}
+	componentDidMount() {
+		navigator.permissions.query({name: 'geolocation'}).then((result) => {
+			if (result.state == 'granted') {
+				navigator.geolocation.getCurrentPosition(success, error);
 
-    	fetchData();
-    	return () => { ignore = true; }
-  	}, [zone]);
+		        const self = this;
+		        function success(pos) {
+		            const coords = pos.coords;
+		            self.setState({
+		            	locationPermission: true,
+		                currentLocation: [coords.longitude, coords.latitude]
+		            });
+		        }
 
-  	return (
-    	<>
-		    <input value={zone} onChange={e => setZone(e.target.value)} />
-		    <h2>Warnings for {zone}</h2>
-	      	<table className="table table-striped" style={{marginTop: 20}}>
-	      		<thead>
-	      			<tr>
-	      				<th>Time submitted</th>
-	      				<th>Description</th>
-	      				<th>Author</th>
-	      			</tr>
-	      		</thead>
-	      		<tbody>
-			        {data.entries.map(item => (
-			        	<tr key={item._id}>
-			        		<td>{item.entry_time}</td>
-			        		<td>{item.entry_description}</td>
-			        		<td>{item.entry_author}</td>
-				        </tr>
-			        ))}
-	      		</tbody>
-	      	</table>
-	    </>
-  	);
+		        function error() {
+		            console.log("Unable to retrieve location.");
+		        }
+
+			} else if (result.state == 'prompt') {
+				navigator.geolocation.getCurrentPosition(success, error);
+
+		        const self = this;
+		        function success(pos) {
+		            const coords = pos.coords;
+		            self.setState({
+		            	locationPermission: true,
+		                currentLocation: [coords.longitude, coords.latitude]
+		            });
+		        }
+
+		        function error() {
+		            console.log("Unable to retrieve location.");
+		        }
+			}
+		});
+	}
+
+  	render() {
+  		const locationEnabled = this.state.locationPermission;
+  		let content;
+
+  		if (locationEnabled == false) {
+  			return (
+  				<div style={{marginTop: 10}}>
+  					<h2>Your location is blocked. :(</h2>
+  					<p>We need to access your location in order to find information 
+  						for your area! If you want to use this application, please 
+  						enable location permissions for this app.</p>
+  				</div>
+  			)
+  		}
+
+        return (
+            <div style={{marginTop: 10}}>
+                <ViewWarnings currentLocation={this.state.currentLocation}/>
+            </div>
+        )
+    }
 }
-export default Search;
+
+
+			///         {data.entries.map(item => (
+			//         	<tr key={item._id}>
+			//         		<td>{item.entry_time}</td>
+			//         		<td>{item.entry_description}</td>
+			//         		<td>{item.entry_author}</td>
+			// 	        </tr>
+			//         ))}
+	  //     		</tbody>
+	  //     	</table>
+	  //   </>
+  	// );
