@@ -24,7 +24,8 @@ app.use(function(req, res, next) {
 //mongoose.connect('mongodb://127.0.0.1:27017/entries', {useNewUrlParser: true });
 //const connection = mongoose.connection;
 
-const connectionString = "mongodb+srv://" + process.env.DB_ADMIN_USERNAME + ":" + process.env.DB_ADMIN_PASSWORD + "@parkingwarningcluster-ubevk.mongodb.net/ParkingWarningDB?retryWrites=true&w=majority";
+//const connectionString = "mongodb+srv://" + process.env.DB_ADMIN_USERNAME + ":" + process.env.DB_ADMIN_PASSWORD + "@parkingwarningcluster-ubevk.mongodb.net/ParkingWarningDB?retryWrites=true&w=majority";
+const connectionString = "mongodb+srv://RegUser:1aseWNnedwPliSSV@parkingwarningcluster-ubevk.mongodb.net/ParkingWarningDB?retryWrites=true&w=majority";
 mongoose.connect(connectionString, { useNewUrlParser: true });
 const connection = mongoose.connection;
 connection.once('open', function() {
