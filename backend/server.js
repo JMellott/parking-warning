@@ -12,13 +12,8 @@ let Entry = require('./entry.model');
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/entries', entryRoutes);
-/*app.use(csp({
-	policies: {
-		'default-src': [csp.NONE],
-		'img-src': [csp.SELF]
-	}
-}));*/
+app.use('/', entryRoutes);
+
 app.use(function(req, res, next) {
     res.setHeader("Content-Security-Policy", "default-src 'none'");
     console.log(process.env);
@@ -29,12 +24,13 @@ app.use(function(req, res, next) {
 //mongoose.connect('mongodb://127.0.0.1:27017/entries', {useNewUrlParser: true });
 //const connection = mongoose.connection;
 
-const connectionString = "mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASS + "@parkingwarningcluster-ubevk.mongodb.net/ParkingWarningDB?retryWrites=true&w=majority";
+const connectionString = "mongodb+srv://" + process.env.DB_ADMIN_USERNAME + ":" + process.env.DB_ADMIN_PASSWORD + "@parkingwarningcluster-ubevk.mongodb.net/ParkingWarningDB?retryWrites=true&w=majority";
 mongoose.connect(connectionString, { useNewUrlParser: true });
 const connection = mongoose.connection;
 connection.once('open', function() {
 	console.log('MongoDB database connection established successsfully');
 });
+
 
 app.listen(port, function() {
 	console.log("Running on port: " + port);
@@ -58,30 +54,39 @@ entryRoutes.route('/:id').get(function(req, res) {
 });
 
 entryRoutes.route('/add').post(function(req, res) {
-	let entry = new Entry(req.body);
+	const entry = new Entry({
+		'description': req.body['description'],
+		'time': req.body['time'],
+		'location': {
+			'coordinates': req.body['location']
+		}
+	});
+
 	entry.save()
 		.then(entry => {
 			res.status(200).json({'entry': 'entry added successsfully'});
 		})
 		.catch(err => {
+			console.log(err);
 			res.status(400).send('adding new entry failed');
 		});
 });
 
-entryRoutes.route('/view/:zone').get(function(req, res) {
-	let area = req.params.zone;
-	Entry.find({entry_zone: area}, function (err, entries) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json({entries});
+entryRoutes.route('/view/').post(function(req, res) {
+	let area = req.body['location'];
+	Entry.find(
+		{'location.coordinates': {$near: {$geometry: 
+			{type: "Point", coordinates: [area[0], area[1]]},
+				$minDistance: 0,
+				$maxDistance: 1000}}}, 
+		function (err, entries) {
+			if (err) {
+				console.log(err);
+			} else {
+				res.json(entries);
+			}
 		}
-	});
-	/*Entry.find({zone: area})
-		.then(console.log(res))
-		.catch(err => {
-			res.status(400).send('adding new entry failed');
-		});*/
+	);
 });
 
 entryRoutes.route('/update/:id').post(function(req, res) {
