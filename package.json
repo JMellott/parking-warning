@@ -1,0 +1,26 @@
+{
+  "name": "parking-warning",
+  "version": "1.0.0",
+  "description": "Requires Node.js to be installed on your machine.",
+  "main": "index.js",
+  "dependencies": {
+    "nodemon": "^2.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JMellott/parking-warning.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JMellott/parking-warning/issues"
+  },
+  "homepage": "https://github.com/JMellott/parking-warning#readme",
+  "engines": {
+    "node": "12.6.2"
+  }
+}
