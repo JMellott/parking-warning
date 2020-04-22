@@ -9,7 +9,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./client/npm start;./backend/npm run start"
+    "start": "cd client;npm start;cd ../backend; npm run start"
   },
   "repository": {
     "type": "git",
