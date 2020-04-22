@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/JMellott/parking-warning#readme",
   "engines": {
-    "node": "10.x"
+    "node": "12.6.2"
   }
 }
