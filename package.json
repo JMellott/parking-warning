@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/JMellott/parking-warning/issues"
   },
-  "homepage": "https://github.com/JMellott/parking-warning#readme"
+  "homepage": "https://github.com/JMellott/parking-warning#readme",
+  "engines": {
+    "node": "10.x"
+  }
 }
