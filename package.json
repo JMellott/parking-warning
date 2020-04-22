@@ -9,13 +9,11 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd client;npm start;cd ../backend; npm run start"
+    "start": "cd backend/ && node server",
+    "build": "cd client/ && npm install && npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JMellott/parking-warning.git"
-  },
-  "author": "",
+  "repository": "git+https://github.com/JMellott/parking-warning.git",
+  "author": "Joshua Mellott <mellott.joshua@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/JMellott/parking-warning/issues"
