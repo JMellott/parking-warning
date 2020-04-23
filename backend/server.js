@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const csp = require('express-csp-header');
 const mongoose = require('mongoose');
-const port = 4000;
+const port = process.env.PORT || 4000;
 const entryRoutes = express.Router();
 
 let Entry = require('./entry.model');
