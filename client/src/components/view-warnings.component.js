@@ -28,7 +28,7 @@ export default class ViewWarnings extends Component {
     async fetchData(loc) {
     	try {
     		this.setState({isLoading: true});
-    		const result = await axios.post('http://localhost:4000/view/', loc);
+    		const result = await axios.post('https://parksaverapi.herokuapp.com/view/', loc);
     		this.setState({
     			warnings: result.data,
     			isLoading: false

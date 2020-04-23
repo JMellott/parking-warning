@@ -59,7 +59,7 @@ export default class AddWarning extends Component {
             location: [this.state.location[0], this.state.location[1]]
         };
 
-        axios.post('http://localhost:4000/add', newEntry)
+        axios.post('https://parksaverapi.herokuapp.com/add', newEntry)
             .then(res => console.log(res.data))
             .then(
                 this.setState({
